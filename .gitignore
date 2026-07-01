@@ -1,0 +1,37 @@
+# Virtual Environment
+rag/
+.venv/
+venv/
+
+# Data
+data sources/
+
+#Task 
+*.docx
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+
+
+# VS Code
+.vscode/
+
+# JetBrains
+.idea/
+
+# Output
+output/
+outputs
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Chroma 
+chroma_db/
+
+# Logs
+*.log
