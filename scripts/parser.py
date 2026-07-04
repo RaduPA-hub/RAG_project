@@ -40,20 +40,22 @@ def extract_document_timestamp(soup):
     tables = soup.find_all("table")
 
     if not tables:
-        return None
+        return None, None
 
     rows = tables[0].find_all("tr")
 
     if len(rows) < 2:
-        return None
+        return None, None
 
     raw = rows[1].get_text(" ", strip=True)
     raw = raw.replace("Sent:", "").strip()
 
+
     try:
-        return date_parser.parse(raw).isoformat()
+        parsed_date = date_parser.parse(raw).date()
+        return parsed_date.isoformat(), parsed_date.toordinal()
     except Exception:
-        return None
+        return None, None
 
 
 def extract_likes(text: str):
@@ -69,7 +71,7 @@ def load_table_documents():
     for html_file in html_files:
         html = html_file.read_text(encoding="utf-8", errors="ignore")
         soup = BeautifulSoup(html, "lxml")
-        timestamp = extract_document_timestamp(soup)
+        date, date_ordinal = extract_document_timestamp(soup)
         tables = soup.find_all("table")
 
         for table_index, table in enumerate(tables):
@@ -99,7 +101,8 @@ def load_table_documents():
                         "table_index": table_index,
                         "section": section,
                         "source_url": source_url,
-                        "timestamp": timestamp,
+                        "date": date,
+                        "date_ordinal": date_ordinal,
                         "likes": extract_likes(text),
                     },
                 )

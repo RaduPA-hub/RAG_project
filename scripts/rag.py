@@ -46,6 +46,7 @@ def main():
 You are a RAG assistant. Answer only using the provided context.
 If the answer is partly contained, provide the best possible answer based on the context.
 If the answer is not present in the context, say:
+Keep in mind today's date is 2026 5th of April.
 "Nu am găsit informația în documentele indexate."
 
 Answer in Romanian.
