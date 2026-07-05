@@ -1,33 +1,32 @@
-from config import CHROMA_FOLDER, COLLECTION_NAME, EMBEDDING_MODEL, TOP_K
-from langchain_ollama import OllamaEmbeddings
 from langchain_chroma import Chroma
+from langchain_ollama import OllamaEmbeddings
+from config import CHROMA_FOLDER, COLLECTION_NAME, EMBEDDING_MODEL, TOP_K
 
 
-def main():
-    embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
+def get_vectorstore():
+    embeddings = OllamaEmbeddings(
+        model=EMBEDDING_MODEL,
+    )
 
-    vectorstore = Chroma(
+    return Chroma(
         persist_directory=CHROMA_FOLDER,
         collection_name=COLLECTION_NAME,
         embedding_function=embeddings,
     )
 
-    query = "Vreau mai multe informatii despre OpenClaw"
 
-    results = vectorstore.similarity_search_with_score(
+def retrieve_documents(query: str, metadata_filter=None, k: int = TOP_K):
+    vectorstore = get_vectorstore()
+
+    docs = vectorstore.similarity_search(
         query,
-        k=TOP_K
+        k=k,
+        filter=metadata_filter,
     )
 
-    print(f"Query: {query}")
-    print(f"Results: {len(results)}")
+    print("\n=== RETRIEVED DOC METADATA ===")
+    for i, doc in enumerate(docs, start=1):
+        print(f"\nDOC {i}")
+        print(doc.metadata)
 
-    for i, (doc, score) in enumerate(results, start=1):
-        print(f"\n--- RESULT {i} ---")
-        print(f"Score: {score}")
-        print(f"Metadata: {doc.metadata}")
-        print(doc.page_content[:1000])
-
-
-if __name__ == "__main__":
-    main()
+    return docs

@@ -1,4 +1,3 @@
-from pathlib import Path
 from bs4 import BeautifulSoup
 from langchain_core.documents import Document
 from config import DATA_FOLDER
@@ -53,9 +52,9 @@ def extract_document_timestamp(soup):
 
     try:
         parsed_date = date_parser.parse(raw).date()
-        return parsed_date.isoformat(), parsed_date.toordinal()
+        return parsed_date.isoformat(), parsed_date.toordinal(), parsed_date.weekday()
     except Exception:
-        return None, None
+        return None, None, None
 
 
 def extract_likes(text: str):
@@ -64,6 +63,10 @@ def extract_likes(text: str):
         return int(match.group(1).replace(",", ""))
     return None
 
+def extract_all_likes(text: str):
+    matches = re.findall(r"([\d,]+)\s+Likes", text)
+    return [int(match.replace(",", "")) for match in matches]
+
 def load_table_documents():
     html_files = list(DATA_FOLDER.glob("*.html"))
     documents = []
@@ -71,12 +74,12 @@ def load_table_documents():
     for html_file in html_files:
         html = html_file.read_text(encoding="utf-8", errors="ignore")
         soup = BeautifulSoup(html, "lxml")
-        date, date_ordinal = extract_document_timestamp(soup)
+        date, date_ordinal, weakday = extract_document_timestamp(soup)
         tables = soup.find_all("table")
-
+        
         for table_index, table in enumerate(tables):
             text = table.get_text("\n", strip=True)
-
+            all_likes = extract_all_likes(text)
             if len(text) < 30:
                 continue
 
@@ -86,7 +89,7 @@ def load_table_documents():
 
             section = detect_section(text)
 
-            # nu indexăm summary-ul, pentru că domină retrieval-ul
+            # domină retrieval-ul
             if section == "summary":
                 continue
 
@@ -102,12 +105,13 @@ def load_table_documents():
                         "section": section,
                         "source_url": source_url,
                         "date": date,
+                        "weakday": weakday,
                         "date_ordinal": date_ordinal,
-                        "likes": extract_likes(text),
+                         "likes": all_likes if section == "signals" else (all_likes[0] if all_likes else None),
                     },
                 )
             )
-
+    print([doc.metadata for doc in documents])
     return documents
 
 
