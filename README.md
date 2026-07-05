@@ -80,7 +80,7 @@ Scor maxim:
 
 A obținut cel mai bun scor al QueryPlan-ului.
 
-Principalul dezavantaj îl reprezintă timpul foarte mare de inferență.
+Principalul dezavantaj îl reprezintă timpul foarte mare de execuție.
 
 ---
 
