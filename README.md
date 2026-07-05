@@ -29,7 +29,7 @@ Modelele utilizate în cadrul proiectului:
 ollama pull qwen3:4b
 ollama pull llama3.2:3b
 ollama pull mistral
-ollama pull mxbai-embed-large
+ollama pull bge-m3
 ```
 
 ---
