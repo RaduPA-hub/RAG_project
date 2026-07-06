@@ -173,7 +173,7 @@ Deși planner-ul nu generează întotdeauna un QueryPlan perfect, necesită opti
 Rămâne un posibil candidat.
 
 ---
-# 5. Evaluarea Retrieval-ului
+# 4. Evaluarea Retrieval-ului
 
 Au fost comparate trei strategii diferite de retrieval:
 
@@ -187,7 +187,7 @@ Rezultatele au arătat că, pentru dimensiunea actuală a colecției de document
 
 ---
 
-# 6. Limitări
+# 5. Limitări
 
 Fiind un Proof of Concept, sistemul prezintă câteva limitări:
 
@@ -198,7 +198,7 @@ Fiind un Proof of Concept, sistemul prezintă câteva limitări:
 
 ---
 
-# 7. Dezvoltări viitoare
+# 6. Dezvoltări viitoare
 
 Direcțiile de dezvoltare planificate includ:
 
