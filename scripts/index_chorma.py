@@ -13,7 +13,6 @@ def main():
 
     embeddings = OllamaEmbeddings(
         model=EMBEDDING_MODEL,
-        base_url="http://127.0.0.1:11434",
     )
 
     print("Testing embedding...")

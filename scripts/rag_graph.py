@@ -158,7 +158,7 @@ def main():
     while True:
         question = input("\nÎntrebare: ")
 
-        if question.lower().strip() in ["exit", "quit", "q"]:
+        if question.lower().strip() in ["exit", "quit"]:
             break
 
         result = app.invoke(

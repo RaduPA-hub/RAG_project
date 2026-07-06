@@ -39,12 +39,12 @@ def extract_document_timestamp(soup):
     tables = soup.find_all("table")
 
     if not tables:
-        return None, None
+        return None, None, None
 
     rows = tables[0].find_all("tr")
 
     if len(rows) < 2:
-        return None, None
+        return None, None, None
 
     raw = rows[1].get_text(" ", strip=True)
     raw = raw.replace("Sent:", "").strip()

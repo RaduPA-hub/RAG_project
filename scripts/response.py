@@ -91,6 +91,7 @@ Rules:
 6. Translate all generated text to Romanian.
 7. If the context is insufficient, explicitly say:
 "Nu am găsit informația în documentele indexate."
+8. Offer the variables requested on top of the analytical result if available.
 
 
 Context:
