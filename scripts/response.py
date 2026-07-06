@@ -56,7 +56,7 @@ You are an analytics assistant.
 Answer in Romanian.
 Use only the provided analysis result.
 Explain the trend clearly.
-Mention average, maximum and percentage increase when available.
+Mention total, average, maximum and percentage increase when available, translate to Romanian.
 
 Analysis result:
 {analysis_result}

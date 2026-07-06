@@ -64,8 +64,6 @@ User question:
 {question}
 
 """
-
-
 import time
 
 def plan_query(question: str) -> QueryPlan:
@@ -105,15 +103,6 @@ def plan_query(question: str) -> QueryPlan:
         analytics=data.get("analytics", False),
     )
     t7 = time.perf_counter()
-    print(response.content)
-    print(response.response_metadata)
-    print(f"LLM init      : {t1-t0:.3f}s")
-    print(f"Prompt build  : {t2-t1:.3f}s")
-    print(f"Chain build   : {t3-t2:.3f}s")
-    print(f"Invoke        : {t4-t3:.3f}s")
-    print(f"Strip         : {t5-t4:.6f}s")
-    print(f"JSON          : {t6-t5:.6f}s")
-    print(f"QueryPlan     : {t7-t6:.6f}s")
     return plan 
 if __name__ == "__main__":
     question = input("Întrebare: ")

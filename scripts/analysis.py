@@ -33,6 +33,7 @@ def run_trend_analysis(docs, metric: str, group_by: str) -> AnalysisResult:
         documents = len(values)
         average = sum(values) / documents if documents else 0
         maximum = max(values) if values else 0
+        total = sum(values) if values else 0
 
         rows.append(
             DocumentAnalysis(
@@ -41,6 +42,7 @@ def run_trend_analysis(docs, metric: str, group_by: str) -> AnalysisResult:
                 average=round(average, 2),
                 maximum=maximum,
                 percentage_increase=0,
+                total=total,
             )
         )
 
@@ -52,12 +54,12 @@ def run_trend_analysis(docs, metric: str, group_by: str) -> AnalysisResult:
             rows=[],
         )
 
-    baseline_average = rows[0].average
+    baseline_total = rows[0].total
 
     for row in rows:
-        if baseline_average:
+        if baseline_total:
             row.percentage_increase = round(
-                ((row.average - baseline_average) / baseline_average) * 100,
+                ((row.total - baseline_total) / baseline_total) * 100,
                 2,
             )
         else:

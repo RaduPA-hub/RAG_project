@@ -5,6 +5,7 @@ from dataclasses import dataclass
 class DocumentAnalysis:
     date: str
     documents: int
+    total: int
     average: float
     maximum: int
     percentage_increase: float

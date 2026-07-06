@@ -14,8 +14,6 @@ __pycache__/
 *.pyc
 *.pyo
 
-
-
 # VS Code
 .vscode/
 

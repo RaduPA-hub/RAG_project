@@ -31,9 +31,79 @@ ollama pull llama3.2:3b
 ollama pull mistral
 ollama pull bge-m3
 ```
+# 2. Arhitectura soluției
+
+Fluxul sistemului este împărțit în două etape:
+## Arhitectura soluției
+
+<p align="center">
+  <img src="diagrams/architecture.svg" width="900">
+</p>
+
+
+1.Indexing ( executată o singură dată, la apariția unor documente noi )
+
+Parserul extrage atât conținutul documentelor, cât și metadatele asociate acestora:
+
+- secțiune;
+- dată;
+- număr de reacții (like-uri);
+- URL;
+- sursă (document);
+
+Documentele sunt transformate în embedding-uri și indexate în ChromaDB.
+
+
+
+### Query Planner
+
+Planner-ul analizează întrebarea utilizatorului și generează un plan de interogare ce conține:
+
+- semantic_query;
+- sections;
+- date_filter;
+- analytics;
+- sort.
+
+Acest plan este utilizat pentru construirea interogării către ChromaDB.
 
 ---
-# 2. Benchmark LLM
+
+### Retriever
+
+Retriever-ul realizează căutarea semantică utilizând:
+
+- embedding-ul întrebării;
+- filtrele generate de Query Planner.
+
+Rezultatul constă în primele K documente considerate relevante.
+
+---
+
+### Analyser
+
+Pentru întrebările care solicită analiză statistică ( trend, engagement) se apeleaza acest tool si genereaza:
+- totalul;
+- media;
+- valoarea maximă;
+- creșterea procentuală.
+
+---
+
+### Answer Generator
+
+Generatorul primește:
+
+- întrebarea utilizatorului;
+- documentele recuperate;
+- rezultatul analizei (dacă există)
+
+și generează răspunsul final.
+
+---
+
+---
+# 3. Benchmark LLM
 
 Au fost evaluate trei modele open-source.
 "llama3.2:3b"
@@ -103,3 +173,37 @@ Deși planner-ul nu generează întotdeauna un QueryPlan perfect, necesită opti
 Rămâne un posibil candidat.
 
 ---
+# 5. Evaluarea Retrieval-ului
+
+Au fost comparate trei strategii diferite de retrieval:
+
+- Retrieval Vanilla;
+- Retrieval If-Based ( generarea planului de interogare cu if-uri explicite, fără utilizarea unui LLM );
+- Retrieval asistat de GAR.
+
+Rezultatele au arătat că, pentru dimensiunea actuală a colecției de documente, Retrieval If-Based și GAR oferă performanțe comparabile din punctul de vedere al documentelor recuperate, ambele depășind Retrieval Vanilla în scenariile bazate pe filtrarea metadatelor.
+
+În cazul interogărilor semantice complexe, planner-ul GAR oferă avantajul interpretării întrebării utilizatorului și generării automate a unei interogări semantice și a filtrelor necesare retrieval-ului.
+
+---
+
+# 6. Limitări
+
+Fiind un Proof of Concept, sistemul prezintă câteva limitări:
+
+- compatibil doar cu surse de informare in format HTML;
+- retrieval-ul este bazat exclusiv pe semantic search;
+- nu este implementat încă un mecanism de reranking;
+- compromis semnificativ între acuratețe și timp de execuție
+
+---
+
+# 7. Dezvoltări viitoare
+
+Direcțiile de dezvoltare planificate includ:
+
+- Hybrid Retrieval;
+- Cross-Encoder Reranking;
+- optimizarea generării semantic_query ( pentru llama );
+- extinderea metadatelor disponibile;
+- suport pentru noi tipuri de documente;
