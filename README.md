@@ -37,7 +37,7 @@ Fluxul sistemului este împărțit în două etape:
 ## Arhitectura soluției
 
 <p align="center">
-  <img src="diagrams/architecture.svg" width="900">
+  <img src="diagram/architecture.svg" width="900">
 </p>
 
 
