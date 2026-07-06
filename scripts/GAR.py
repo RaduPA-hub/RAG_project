@@ -67,33 +67,17 @@ User question:
 import time
 
 def plan_query(question: str) -> QueryPlan:
-    t0 = time.perf_counter()
-
     llm = ChatOllama(
         model=LLM_MODEL,
         temperature=0,
     )
-    t1 = time.perf_counter()
-
     prompt = ChatPromptTemplate.from_template(PLANNER_PROMPT)
-    t2 = time.perf_counter()
-
     chain = prompt | llm
-    t3 = time.perf_counter()
-    formatted = prompt.format(question=question)
-
-    print("=" * 80)
-    print(formatted)
-    print("=" * 80)
-    print(len(formatted))
     response = chain.invoke({"question": question})
-    t4 = time.perf_counter()
 
     raw = response.content.strip()
-    t5 = time.perf_counter()
 
     data = json.loads(raw)
-    t6 = time.perf_counter()
 
     plan = QueryPlan(
         semantic_query=data.get("semantic_query", ""),
@@ -102,7 +86,6 @@ def plan_query(question: str) -> QueryPlan:
         sort=data.get("sort"),
         analytics=data.get("analytics", False),
     )
-    t7 = time.perf_counter()
     return plan 
 if __name__ == "__main__":
     question = input("Întrebare: ")

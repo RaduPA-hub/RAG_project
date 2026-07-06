@@ -31,9 +31,16 @@ ollama pull llama3.2:3b
 ollama pull mistral
 ollama pull bge-m3
 ```
-# 2. Arhitectura soluției
+# Rulare
 
+După instalarea tuturor dependențelor și indexarea documentelor în ChromaDB, aplicația poate fi pornită utilizând:
+
+```bash
+python rag_graph.py
+```
+# 2. Arhitectura soluției
 Fluxul sistemului este împărțit în două etape:
+Etapa de answering este orchestrată cu **LangGraph**. 
 ## Arhitectura soluției
 
 <p align="center">
@@ -53,8 +60,8 @@ Parserul extrage atât conținutul documentelor, cât și metadatele asociate ac
 
 Documentele sunt transformate în embedding-uri și indexate în ChromaDB.
 
-
-
+2.Answering
+(Langgraph)
 ### Query Planner
 
 Planner-ul analizează întrebarea utilizatorului și generează un plan de interogare ce conține:

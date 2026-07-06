@@ -74,7 +74,6 @@ Question:
                 "question": question,
             }
         )
-        print(response.response_metadata)
         return response.content
 
     prompt = ChatPromptTemplate.from_template(
